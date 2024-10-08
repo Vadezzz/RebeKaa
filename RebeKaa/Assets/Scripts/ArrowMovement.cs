@@ -2,13 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class ArrowMovement : MonoBehaviour
 {
 
     private Vector3 position;
     private int rotationTrigger;
-    public GameObject bodyPrefab;
+    public GameObject bodyPrefab,tail;
     List<GameObject> body;
     private int currentHorizDir;
     private int currentVertDir;
@@ -16,8 +17,10 @@ public class ArrowMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        tail.transform.position = new Vector3(-1,0,0);
         body = new List<GameObject>();
         body.Add(this.gameObject);
+        body.Add(tail);
         currentHorizDir = 0;
         currentVertDir = 0;
     }
@@ -51,16 +54,25 @@ public class ArrowMovement : MonoBehaviour
     }
     void FixedUpdate()
     {
-        /*
-        for (int i = 1; i < body.Count; i++) {
-            body[i].transform.position = body[i-1].transform.position;
-        }
-        */
+        Vector3 tailPosBefore = tail.transform.position;
         for(int i = body.Count - 1; i > 0; i--) {
             body[i].transform.position = body[i-1].transform.position;
         }
+        Vector3 tailPosAfter = tail.transform.position;
+        
+        Vector3 newDirection = tailPosBefore - tailPosAfter;
+        Debug.Log("x: " + newDirection.x + " y: " + newDirection.y);
+
+        if (newDirection.x != 0) {
+            tail.transform.rotation = Quaternion.Euler(new Vector3(0,0,90));
+            tail.transform.localScale = new Vector3(1,-newDirection.x,1);
+        } else if (newDirection.y != 0) {
+            tail.transform.rotation = Quaternion.Euler(new Vector3(0,0,180));
+            tail.transform.localScale = new Vector3(1,-newDirection.y,1);
+        }
 
         this.transform.position += position;
+
         if(rotationTrigger != 0) {
             if (currentHorizDir != 0) {
                 transform.rotation = Quaternion.Euler(new Vector3(0,0,90));
@@ -75,18 +87,27 @@ public class ArrowMovement : MonoBehaviour
 
     private void makeBigger() {
         Vector3 pos = body[body.Count-1].transform.position;
-        Debug.Log("posicion: " + pos.ToString());
         GameObject newSegment = Instantiate(bodyPrefab,pos,Quaternion.identity);
-        body.Add(newSegment);
-        //body.Insert(body.Count-1,newSegment);
-        //body.AddLast(newSegment);
+        body.Insert(body.Count-1,newSegment);
     }
 
     private void makeSmaller() {
         //body.RemoveLast();
     }
 
-    //falta que si estas yendo hacia una direccion, no te permita ir hacia dicha direccion
-    
+    //falta la direccion de la cola
+
+
+    //hacer el metodo auxiliar
+    private void Rotate(GameObject go, Vector3 direction) {
+        
+        if (currentHorizDir != 0) {
+                transform.rotation = Quaternion.Euler(new Vector3(0,0,90));
+                transform.localScale = new Vector3(1,-currentHorizDir,1);
+            } else {
+                transform.rotation = Quaternion.Euler(new Vector3(0,0,180));
+                transform.localScale = new Vector3(1,-currentVertDir,1);
+            }
+    }
 }
 
