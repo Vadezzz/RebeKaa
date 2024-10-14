@@ -1,18 +1,22 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class ArrowMovement : MonoBehaviour
+public class Snake : MonoBehaviour
 {
 
     private Vector3 position;
     private int rotationTrigger;
+    private int makeBiggerTrigger;
     public GameObject bodyPrefab,tail;
     List<GameObject> body;
     private int currentHorizDir;
     private int currentVertDir;
+    private int SCORE;
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +27,7 @@ public class ArrowMovement : MonoBehaviour
         body.Add(tail);
         currentHorizDir = 0;
         currentVertDir = 0;
+        SCORE = 0;
     }
 
     // Update is called once per frame
@@ -48,12 +53,17 @@ public class ArrowMovement : MonoBehaviour
         }
 
         if (Input.GetKeyDown(KeyCode.Space)) {
-            makeBigger();
+            makeBiggerTrigger = 1;
+            //makeBigger();
         }
 
     }
     void FixedUpdate()
     {
+        if (makeBiggerTrigger == 1) {
+            makeBigger();
+            makeBiggerTrigger = 0;
+        }
         Vector3 tailPosBefore = tail.transform.position;
         for(int i = body.Count - 1; i > 0; i--) {
             body[i].transform.position = body[i-1].transform.position;
@@ -61,7 +71,6 @@ public class ArrowMovement : MonoBehaviour
         Vector3 tailPosAfter = tail.transform.position;
         
         Vector3 newDirection = tailPosBefore - tailPosAfter;
-        Debug.Log("x: " + newDirection.x + " y: " + newDirection.y);
 
         if (newDirection.x != 0) {
             tail.transform.rotation = Quaternion.Euler(new Vector3(0,0,90));
@@ -108,6 +117,14 @@ public class ArrowMovement : MonoBehaviour
                 transform.rotation = Quaternion.Euler(new Vector3(0,0,180));
                 transform.localScale = new Vector3(1,-currentVertDir,1);
             }
+    }
+
+    private void OnTriggerEnter2D (Collider2D collider) {
+        if (collider.gameObject.CompareTag("Body") || collider.gameObject.CompareTag("Wall")) {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        } else if (collider.gameObject.CompareTag("Fruit")) {
+            SCORE++;
+        }
     }
 }
 
