@@ -1,102 +1,65 @@
-<<<<<<< Updated upstream
-=======
 using System;
->>>>>>> Stashed changes
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Enemy1 : MonoBehaviour
-{
-<<<<<<< Updated upstream
-    public float movementSpeed = 5.0f;
-    public float rotationSpeed = 5.0f;
-    public float travelDistance = 10f;
-    private Rigidbody _rigid;
-    private Vector3 movementDirection;
-    private bool isStopping = false;
-    public float stopTime = 1.0f; // time to stop before rotating
-    private float distanceTraveled = 0f;
-=======
-    public float movementSpeed = 3f;
-    public float rotationSpeed = 5.0f;
-    public float travelDistance = 20f;
-    private Rigidbody2D _rigid;
-    private Vector2 movementDirection;
-    private bool isStopping = false;
-    public float stopTime = 1.0f; // time to stop before rotating
-    private float distanceTraveled = 0f;
-	Vector2 direction = Vector2.right;
-    public bool horizontal;
+public class Enemy1 : MonoBehaviour{
+    public float speed = 5f;  // Velocidad de movimiento
+    public float rotationSpeed = 90f;  // Velocidad de rotación en grados por segundo
+    private Vector2 moveDirection;  // Dirección de movimiento en 2D
+    private float currentRotation = 0f;  // Ángulo actual de rotación en grados
+    private float xBorderLimit, yBorderLimit;
+    public float rotationInterval = 2f;  // Intervalo de rotación en segundos
+    private float timeSinceLastRotation;
 
 
->>>>>>> Stashed changes
-
-    // Start is called before the first frame update
     void Start()
     {
-<<<<<<< Updated upstream
-        _rigid = GetComponent<Rigidbody>();
-        movementDirection = transform.forward;
-=======
-        _rigid = GetComponent<Rigidbody2D>();
-        movementDirection = transform.forward;
-        direction = horizontal ? Vector2.right : Vector2.down;
-
->>>>>>> Stashed changes
+        // Inicializar la dirección de movimiento como hacia arriba (0 grados)
+        moveDirection = Vector2.up;
+        xBorderLimit = Camera.main.orthographicSize+1;
+        yBorderLimit = (Camera.main.orthographicSize+1)* Screen.width / Screen.height;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (!isStopping)
-        {
-            // move the character continuously
-<<<<<<< Updated upstream
-            _rigid.MovePosition(transform.position + movementDirection * movementSpeed * Time.deltaTime);
-=======
-		    _rigid.MovePosition(_rigid.position + direction * movementSpeed * Time.deltaTime);
->>>>>>> Stashed changes
-            distanceTraveled += movementSpeed * Time.deltaTime;
-            // check if distance traveled exceeds travel distance
-            if (distanceTraveled >= travelDistance)
-            {
-                isStopping = true;
-            }
-        }
-        else
-        {
-            // stop the character for a moment
-<<<<<<< Updated upstream
-            _rigid.velocity = Vector3.zero;
-            _rigid.angularVelocity = Vector3.zero;
-            // rotate the character
-            Quaternion targetRotation = Quaternion.Euler(0, 90, 0); // rotate 90 degrees
-            _rigid.MoveRotation(Quaternion.Lerp(_rigid.rotation, targetRotation, rotationSpeed * Time.deltaTime));
-=======
-            //_rigid.velocity = Vector2.zero;
-            // rotate the character
-            //int rand = UnityEngine.Random.Range(1,4);
-            //float targetRotation = rand*90f; // rotate 90 degrees
-            //float rotation = Mathf.LerpAngle(_rigid.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-            //_rigid.MoveRotation(rotation);
-            horizontal = !horizontal;
-            direction = horizontal ? Vector2.right : Vector2.down;
+        // Mover el enemigo en la dirección de movimiento
+        transform.position += (Vector3)moveDirection * speed * Time.deltaTime;
 
->>>>>>> Stashed changes
-
-            // wait for a moment before continuing
-            stopTime -= Time.deltaTime;
-            if (stopTime <= 0)
-            {
-                isStopping = false;
-                stopTime = 1.0f;
-            }
+        // Ejemplo: rotar el enemigo cuando presionamos la barra espaciadora
+        timeSinceLastRotation += Time.deltaTime;
+        if (timeSinceLastRotation >= rotationInterval)
+        {
+            RotateEnemy();
+            timeSinceLastRotation = 0f;
         }
+        var newPos = transform.position;
+        if(newPos.x > xBorderLimit)
+        newPos.x = -xBorderLimit+1;
+        else if(newPos.x < -xBorderLimit)
+        newPos.x = xBorderLimit-1;
+        else if(newPos.y > yBorderLimit)
+        newPos.y = -yBorderLimit+1;
+        else if(newPos.y < -yBorderLimit)
+        newPos.y = yBorderLimit-1;
+        transform.position = newPos;
     }
 
-    private void OnCollisionEnter(Collision collision){
-       
+    void RotateEnemy()
+    {
+        // Rotar al enemigo un ángulo aleatorio
+        float randomAngle = UnityEngine.Random.Range(0f, 360f);
+        currentRotation += randomAngle;
+        
+        // Mantener la rotación dentro de los 360 grados
+        if (currentRotation >= 360f) currentRotation -= 360f;
+
+        // Aplicar la rotación al transform
+        transform.rotation = Quaternion.Euler(0, 0, currentRotation);
+
+        // Actualizar la dirección de movimiento según el ángulo de rotación actual
+        float radians = currentRotation * Mathf.Deg2Rad;
+        moveDirection = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians)).normalized;
     }
 }
