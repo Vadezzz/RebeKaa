@@ -9,6 +9,7 @@ TagManager:
   - Tail
   - Fruit
   - Wall
+  - Score
   layers:
   - Default
   - TransparentFX

@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class Snake : MonoBehaviour
 {
@@ -37,7 +38,7 @@ public class Snake : MonoBehaviour
         int verticalDir = Math.Sign(Input.GetAxis("Vertical"));
 
         //unidad de movimiento
-        float magnitude = 1;
+        int magnitude = 1;
 
         if (horizontalDir != 0 && currentHorizDir == 0) {
             position = magnitude*horizontalDir*Vector3.right;
@@ -61,7 +62,7 @@ public class Snake : MonoBehaviour
     void FixedUpdate()
     {
         if (makeBiggerTrigger == 1) {
-            makeBigger();
+            MakeBigger();
             makeBiggerTrigger = 0;
         }
         Vector3 tailPosBefore = tail.transform.position;
@@ -94,13 +95,13 @@ public class Snake : MonoBehaviour
         }
     }
 
-    private void makeBigger() {
+    private void MakeBigger() {
         Vector3 pos = body[body.Count-1].transform.position;
         GameObject newSegment = Instantiate(bodyPrefab,pos,Quaternion.identity);
         body.Insert(body.Count-1,newSegment);
     }
 
-    private void makeSmaller() {
+    private void MakeSmaller() {
         //body.RemoveLast();
     }
 
@@ -123,10 +124,16 @@ public class Snake : MonoBehaviour
         if (collider.gameObject.CompareTag("Body") || collider.gameObject.CompareTag("Wall")) {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         } else if (collider.gameObject.CompareTag("Fruit")) {
+            SCORE++;
+            UpdateScoreText();
             Destroy(collider.gameObject);
             makeBiggerTrigger = 1;
-            SCORE++;
         }
+    }
+
+    private void UpdateScoreText() {
+        GameObject go = GameObject.FindGameObjectWithTag("Score");
+        go.GetComponent<Text>().text = "PUNTOS: " + SCORE;
     }
 }
 
