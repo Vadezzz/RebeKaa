@@ -49,17 +49,33 @@ public class Enemy1 : MonoBehaviour{
     void RotateEnemy()
     {
         // Rotar al enemigo un ángulo aleatorio
-        float randomAngle = UnityEngine.Random.Range(0f, 360f);
-        currentRotation += randomAngle;
+        int randomAngle = UnityEngine.Random.Range(0, 3);
+        currentRotation = (randomAngle*90f)%360f;
         
         // Mantener la rotación dentro de los 360 grados
-        if (currentRotation >= 360f) currentRotation -= 360f;
+        //if (currentRotation >= 360f) currentRotation -= 360f;
 
         // Aplicar la rotación al transform
-        transform.rotation = Quaternion.Euler(0, 0, currentRotation);
+        Vector3 aux = new Vector3(transform.eulerAngles.x,transform.eulerAngles.y, currentRotation);
+        Quaternion q = new Quaternion();
+        q.eulerAngles = aux;
+        transform.rotation = q;
+        print(currentRotation);
 
         // Actualizar la dirección de movimiento según el ángulo de rotación actual
         float radians = currentRotation * Mathf.Deg2Rad;
-        moveDirection = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians)).normalized;
+        if(currentRotation == 0){
+            moveDirection = new Vector2(0,1);
+        }
+        else if(currentRotation == 90){
+            moveDirection = new Vector2(-1,0);
+        }
+        else if(currentRotation == 180){
+            moveDirection = new Vector2(0,-1);
+        }
+        else if(currentRotation == 270){
+            moveDirection = new Vector2(1,0);
+        }
+        print(moveDirection);
     }
 }
