@@ -9,6 +9,8 @@ TagManager:
   - Tail
   - Fruit
   - Wall
+  - Score
+  - Enemy
   layers:
   - Default
   - TransparentFX

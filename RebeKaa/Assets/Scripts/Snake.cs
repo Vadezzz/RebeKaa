@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class Snake : MonoBehaviour
 {
@@ -120,11 +121,20 @@ public class Snake : MonoBehaviour
     }
 
     private void OnTriggerEnter2D (Collider2D collider) {
-        if (collider.gameObject.CompareTag("Body") || collider.gameObject.CompareTag("Wall")) {
+        if (collider.gameObject.CompareTag("Body") || collider.gameObject.CompareTag("Wall") ||
+            collider.gameObject.CompareTag("Enemy")) {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         } else if (collider.gameObject.CompareTag("Fruit")) {
             SCORE++;
+            UpdateScoreText();
+            Destroy(collider.gameObject);
+            makeBiggerTrigger = 1;
         }
+    }
+
+    private void UpdateScoreText() {
+        GameObject go = GameObject.FindGameObjectWithTag("Score");
+        go.GetComponent<Text>().text = "PUNTOS: " + SCORE;
     }
 }
 
