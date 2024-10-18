@@ -123,6 +123,8 @@ public class Snake : MonoBehaviour
         if (collider.gameObject.CompareTag("Body") || collider.gameObject.CompareTag("Wall")) {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         } else if (collider.gameObject.CompareTag("Fruit")) {
+            Destroy(collider.gameObject);
+            makeBiggerTrigger = 1;
             SCORE++;
         }
     }
