@@ -1124,9 +1124,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23cc8d75286bf4a45ac8d75a1adf75a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab1: {fileID: 0}
-  enemyPrefab2: {fileID: 0}
-  snakeHead: {fileID: 0}
+  enemyPrefab1: {fileID: 2934634487366033990, guid: 392148974e925e04fb9ebadf54b3de07, type: 3}
+  enemyPrefab2: {fileID: 4217264886846421689, guid: cefe41b7371cdac4a8bf85b4da270c19, type: 3}
   timeBetweenWaves: 10
 --- !u!1 &1991265598
 GameObject:

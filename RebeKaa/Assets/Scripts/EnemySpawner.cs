@@ -9,9 +9,6 @@ public class EnemySpawner : MonoBehaviour
     public GameObject enemyPrefab2; //aguila
     
     //public GameObject enemyPrefab3; //fenec
-    //public GameObject snakeHead; 
-    //private int xlimit = 33;
-    //private int ylimit = 14;
     private int waveCounter = 1;
     public int timeBetweenWaves = 30;
     // Start is called before the first frame update
@@ -20,15 +17,28 @@ public class EnemySpawner : MonoBehaviour
         InvokeRepeating("spawnWave",0f,timeBetweenWaves);
     }
 
-    // private void spawnRandomEnemy(GameObject enemy) {
-    //     int x,y;
-    //     do{
-    //         x = UnityEngine.Random.Range(-xlimit,xlimit);
-    //         y = UnityEngine.Random.Range(-ylimit,ylimit);
-    //     } while(distanceLessThan(snakeHead.transform.position,x,y));
-    //     GameObject e1 = Instantiate(enemy, new Vector3(x,y,0), Quaternion.identity);
-    //     e1.transform.localScale = new Vector3(2,2,2);
-    // }
+    private void spawnRandomEnemy(GameObject enemy) {
+        int x;
+        x = UnityEngine.Random.Range(1,4);
+        switch (x){
+            case 1:
+                GameObject e1 = Instantiate(enemy, new Vector3(0,14,0), Quaternion.identity);
+                e1.transform.localScale = new Vector3(3,3,3);
+                break;
+            case 2:
+                GameObject e2 = Instantiate(enemy, new Vector3(0,14,0), Quaternion.identity);
+                e2.transform.localScale = new Vector3(3,3,3);
+                break;
+            case 3:
+                GameObject e3 = Instantiate(enemy, new Vector3(33,0,0), Quaternion.identity);
+                e3.transform.localScale = new Vector3(3,3,3);
+                break;
+            case 4:
+                GameObject e4 = Instantiate(enemy, new Vector3(33,0,0), Quaternion.identity);
+                e4.transform.localScale = new Vector3(3,3,3);
+                break;
+        }
+    }
 
     private void spawnWave(){
         switch (waveCounter){
@@ -60,12 +70,12 @@ public class EnemySpawner : MonoBehaviour
         Vector3 pos2 = new Vector3(x2,y2,0);
         Vector3 pos3 = new Vector3(x3,y3,0);
         GameObject e1 = Instantiate(enemyPrefab1, pos1, Quaternion.identity);
-        e1.transform.localScale = new Vector3(2,2,2);
+        e1.transform.localScale = new Vector3(3,3,3);
         GameObject e2 = Instantiate(enemyPrefab1, pos2, Quaternion.identity);
-        e2.transform.localScale = new Vector3(2,2,2);
+        e2.transform.localScale = new Vector3(3,3,3);
         GameObject e3 = Instantiate(enemyPrefab1, pos3, Quaternion.identity);
-        e3.transform.localScale = new Vector3(2,2,2);
-        //spawnRandomEnemy(enemyPrefab1);
+        e3.transform.localScale = new Vector3(3,3,3);
+        spawnRandomEnemy(enemyPrefab1);
     }
     private void wave2(){
         int x1,y1,x2,y2;
@@ -74,11 +84,11 @@ public class EnemySpawner : MonoBehaviour
         Vector3 pos1 = new Vector3(x1,y1,0);
         Vector3 pos2 = new Vector3(x2,y2,0);
         GameObject e1 = Instantiate(enemyPrefab2, pos1, Quaternion.identity);
-        e1.transform.localScale = new Vector3(2,2,2);
+        e1.transform.localScale = new Vector3(3,3,3);
         GameObject e2 = Instantiate(enemyPrefab2, pos2, Quaternion.identity);
-        e2.transform.localScale = new Vector3(2,2,2);
-        //spawnRandomEnemy(enemyPrefab1);
-        //spawnRandomEnemy(enemyPrefab1);
+        e2.transform.localScale = new Vector3(3,3,3);
+        spawnRandomEnemy(enemyPrefab1);
+        spawnRandomEnemy(enemyPrefab1);
     }
 
     private void wave3(){
