@@ -12,6 +12,9 @@ public class Enemy1 : MonoBehaviour{
     private float xBorderLimit, yBorderLimit;
     public float rotationInterval = 2f;  // Intervalo de rotación en segundos
     private float timeSinceLastRotation;
+    private SpriteRenderer sprite;
+    public Sprite spriteR;
+    public Sprite spriteL;
 
 
     void Start()
@@ -20,6 +23,8 @@ public class Enemy1 : MonoBehaviour{
         moveDirection = Vector2.up;
         xBorderLimit = 36;
         yBorderLimit = 17;
+
+        sprite = GetComponent<SpriteRenderer>();
     }
 
     void Update()
@@ -49,19 +54,24 @@ public class Enemy1 : MonoBehaviour{
     void RotateEnemy()
     {
         // Rotar al enemigo un ángulo aleatorio
-        int randomAngle = UnityEngine.Random.Range(0, 3);
+        int randomAngle = UnityEngine.Random.Range(0, 4);
         currentRotation = (randomAngle*90f)%360f;
-        
+        print(currentRotation);
         // Mantener la rotación dentro de los 360 grados
-        //if (currentRotation >= 360f) currentRotation -= 360f;
+        if (currentRotation >= 360f) currentRotation -= 360f;
 
         // Aplicar la rotación al transform
-        Vector3 aux = new Vector3(transform.eulerAngles.x,transform.eulerAngles.y, currentRotation);
-        Quaternion q = new Quaternion();
-        q.eulerAngles = aux;
-        transform.rotation = q;
-        print(currentRotation);
-
+        // Vector3 aux = new Vector3(transform.eulerAngles.x,transform.eulerAngles.y, currentRotation);
+        // Quaternion q = new Quaternion();
+        // q.eulerAngles = aux;
+        // transform.rotation = q;
+        if (randomAngle == 1){
+            sprite.sprite = spriteL;
+        }
+        if (randomAngle == 3){
+            sprite.sprite = spriteR;
+        }
+        
         // Actualizar la dirección de movimiento según el ángulo de rotación actual
         float radians = currentRotation * Mathf.Deg2Rad;
         if(currentRotation == 0){
@@ -76,6 +86,5 @@ public class Enemy1 : MonoBehaviour{
         else if(currentRotation == 270){
             moveDirection = new Vector2(1,0);
         }
-        print(moveDirection);
     }
 }

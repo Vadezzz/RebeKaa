@@ -61,7 +61,6 @@ public class Enemy2 : MonoBehaviour
         Quaternion q = new Quaternion();
         q.eulerAngles = aux;
         transform.rotation = q;
-        print(currentRotation);
 
         // Actualizar la dirección de movimiento según el ángulo de rotación actual
         float radians = currentRotation * Mathf.Deg2Rad;
@@ -77,6 +76,5 @@ public class Enemy2 : MonoBehaviour
         else if(currentRotation == 270){
             moveDirection = new Vector2(1,0);
         }
-        print(moveDirection);
     }
 }
