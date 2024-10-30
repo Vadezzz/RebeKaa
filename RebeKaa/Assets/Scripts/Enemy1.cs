@@ -18,8 +18,8 @@ public class Enemy1 : MonoBehaviour{
     {
         // Inicializar la dirección de movimiento como hacia arriba (0 grados)
         moveDirection = Vector2.up;
-        xBorderLimit = Camera.main.orthographicSize+1;
-        yBorderLimit = (Camera.main.orthographicSize+1)* Screen.width / Screen.height;
+        xBorderLimit = 36;
+        yBorderLimit = 17;
     }
 
     void Update()
