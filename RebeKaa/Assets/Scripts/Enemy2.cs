@@ -15,10 +15,27 @@ public class Enemy2 : MonoBehaviour
 
     void Start()
     {
-        // Inicializar la dirección de movimiento como hacia arriba (0 grados)
-        moveDirection = Vector2.up;
-        // xBorderLimit = Camera.main.orthographicSize+1;
-        // yBorderLimit = (Camera.main.orthographicSize+1)* Screen.width / Screen.height;
+        // Inicializar la dirección de movimiento 
+        int rnd = UnityEngine.Random.Range(0, 4);
+        switch (rnd){
+            case 0:
+                moveDirection = Vector2.up;
+                changeOrientation(rnd);
+                break;
+            case 1:
+                moveDirection = Vector2.down;
+                changeOrientation(rnd);
+                break;
+            case 2:
+                moveDirection = Vector2.left;
+                changeOrientation(rnd);
+                break;
+            case 3:
+                moveDirection = Vector2.right;
+                changeOrientation(rnd);
+                break;
+        }
+
         xBorderLimit = 36;
         yBorderLimit = 17;
     }
@@ -47,6 +64,13 @@ public class Enemy2 : MonoBehaviour
         transform.position = newPos;
     }
 
+    void changeOrientation(int i){
+        currentRotation = (i*90f)%360f;
+        Vector3 aux = new Vector3(transform.eulerAngles.x,transform.eulerAngles.y, currentRotation);
+        Quaternion q = new Quaternion();
+        q.eulerAngles = aux;
+        transform.rotation = q;
+    }
     void RotateEnemy()
     {
         // Rotar al enemigo un ángulo aleatorio
@@ -57,10 +81,7 @@ public class Enemy2 : MonoBehaviour
         //if (currentRotation >= 360f) currentRotation -= 360f;
 
         // Aplicar la rotación al transform
-        Vector3 aux = new Vector3(transform.eulerAngles.x,transform.eulerAngles.y, currentRotation);
-        Quaternion q = new Quaternion();
-        q.eulerAngles = aux;
-        transform.rotation = q;
+        changeOrientation(randomAngle);
 
         // Actualizar la dirección de movimiento según el ángulo de rotación actual
         float radians = currentRotation * Mathf.Deg2Rad;

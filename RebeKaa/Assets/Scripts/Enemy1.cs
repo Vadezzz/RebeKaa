@@ -19,8 +19,9 @@ public class Enemy1 : MonoBehaviour{
 
     void Start()
     {
-        // Inicializar la dirección de movimiento como hacia arriba (0 grados)
+        // Inicializar la dirección de movimiento 
         moveDirection = Vector2.up;
+        
         xBorderLimit = 36;
         yBorderLimit = 17;
 
