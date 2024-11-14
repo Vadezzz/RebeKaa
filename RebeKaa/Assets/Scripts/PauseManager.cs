@@ -6,14 +6,28 @@ using UnityEngine.UI;
 public class PauseManager : MonoBehaviour
 {
     public GameObject Menu;  // Referencia al menú de pausa en la UI
+    public GameObject AjustesIN; //Referencia al menu de ajustes
     private bool isPaused = false;  // Indica si el juego está en pausa
+    private bool MenuActivo = false;
+    private bool AjustesActivo = false;
 
     void Update()
     {
         // Detectar si se presiona la tecla Escape
-        if (Input.GetKeyDown(KeyCode.Escape))
+      if (Input.GetKeyDown(KeyCode.Escape))
         {
-            TogglePause();
+            if(MenuActivo && !AjustesActivo){
+                ResumeGame();
+            }
+            /*if(AjustesActivo && !MenuActivo){
+                SalirDeAjustes();
+            }*/
+            if(!AjustesActivo && !MenuActivo){
+                PauseGame();
+            }
+            if(AjustesActivo && MenuActivo){
+                ResumeGame();
+            }
         }
     }
 
@@ -21,8 +35,8 @@ public class PauseManager : MonoBehaviour
     public void PauseGame()
     {
         Menu.SetActive(true);  // Mostrar el menú de pausa
+        MenuActivo = true;
         Time.timeScale = 0f;   // Detener el tiempo en el juego
-        isPaused = true;       // Marcar el estado como pausado
         Debug.Log("Juego pausado"); // Mensaje de depuración
     }
 
@@ -30,22 +44,11 @@ public class PauseManager : MonoBehaviour
     public void ResumeGame()
     {
         Menu.SetActive(false); // Ocultar el menú de pausa
+        MenuActivo = false;
+        AjustesIN.SetActive(false);
+        AjustesActivo = false;
         Time.timeScale = 1f;   // Reanudar el tiempo en el juego
-        isPaused = false;      // Marcar el estado como no pausado
         Debug.Log("Juego reanudado"); // Mensaje de depuración
-    }
-
-    // Método que se llama desde el botón para pausar/reanudar
-    public void TogglePause()
-    {
-        if (isPaused)
-        {
-            ResumeGame();  // Si está pausado, reanudar
-        }
-        else
-        {
-            PauseGame();   // Si no está pausado, pausar
-        }
     }
 
     public void SalirDelJuego()
@@ -54,4 +57,17 @@ public class PauseManager : MonoBehaviour
         Application.Quit();
         Debug.Log("Juego cerrado"); // Solo para verificar en el editor de Unity
     }
+
+    public void IrAjustes(){
+        AjustesIN.SetActive(true);
+        AjustesActivo = true;
+        Time.timeScale = 0f;   // Detener el tiempo en el juego
+    }
+
+    public void SalirDeAjustes(){
+        AjustesIN.SetActive(false);
+        AjustesActivo = false;
+        Time.timeScale = 0f;   // Detener el tiempo en el juego
+    }
+
 }
